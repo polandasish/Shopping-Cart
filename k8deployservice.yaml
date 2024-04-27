@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: shoppingcart
+  name: shoppingcart
+  namespace: webapps
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: shoppingcart
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: shoppingcart
+    spec:
+      containers:
+      - image: polandasish/shoppingcart:latest
+        name: shoppingcart
+        ports:
+         - containerPort: 8070
+        resources:
+          requests:
+            memory: 700Mi
+            cpu: 700m
+          limits:
+            memory: 1Gi
+            cpu: 1000m
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: shoppingcart
+  name: shoppingcart
+spec:
+  ports:
+  - protocol: TCP
+    port: 8070
+    targetPort: 8070
+  selector:
+    app: shoppingcart
+  type: NodePort
